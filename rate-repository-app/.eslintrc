@@ -12,6 +12,9 @@
   },
   "rules": {
     "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "semi": "error",
+    "comma-dangle": ["error", "always-multiline"],
+    "eol-last": "error"
   }
 }
