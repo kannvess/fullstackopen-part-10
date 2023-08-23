@@ -17,7 +17,7 @@ const RepositoryList = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  if (result.loading) return <Text>Loading...</Text>;
+  if (result.loading) return <Text style={{position: 'absolute', top: '50%', left: '50%'}}>Loading...</Text>;
 
   const repositories = result.data.repositories.edges.map((edge) => edge.node).reverse();
   
