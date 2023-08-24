@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import theme from "../theme";
 import * as yup from 'yup';
 import useSignIn from "../hooks/useSignIn";
+import { useEffect } from "react";
 
 const styles = StyleSheet.create({
   container: {
@@ -63,11 +64,16 @@ const SignIn = () => {
 
     try {
       signIn({ username, password });
-      console.log(result.data.authenticate.accessToken);
     } catch (e) {
       console.log(e);
     }
   };
+  
+  useEffect(() => {
+    if (result.data) {
+      console.log(result.data.authenticate.accessToken);
+    }
+  }, [result.data]);
   
   return (
     <Formik
