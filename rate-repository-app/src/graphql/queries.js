@@ -27,3 +27,12 @@ export const POST_AUTHENTICATE = gql`
     }
   }
 `;
+
+export const GET_ME = gql`
+  query {
+    me {
+      id
+      username
+    }
+  }
+`;

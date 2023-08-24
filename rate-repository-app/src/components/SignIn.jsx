@@ -6,6 +6,7 @@ import theme from "../theme";
 import * as yup from 'yup';
 import useSignIn from "../hooks/useSignIn";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +58,7 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [signIn, result] = useSignIn();
   
   const onSubmit = async (values) => {
@@ -71,7 +73,7 @@ const SignIn = () => {
   
   useEffect(() => {
     if (result.data) {
-      console.log(result.data.authenticate.accessToken);
+      navigate('/');
     }
   }, [result.data]);
   
