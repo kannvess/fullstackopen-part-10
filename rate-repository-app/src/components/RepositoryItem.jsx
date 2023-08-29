@@ -4,7 +4,7 @@ import theme from "../theme";
 
 const RepositoryItem = ({ item }) => {
   return (
-    <View style={{ backgroundColor: 'white', padding: 10 }}>
+    <View testID="repositoryItem" style={{ backgroundColor: 'white', padding: 10 }}>
       <View style={{ display: "flex", flexDirection: 'row' }}>
         <Image source={{uri: item.ownerAvatarUrl}} style={{ width: 50, height: 50, borderRadius: 5 }} />
         <View style={{ marginLeft: 10, flexShrink: 1, alignItems: "flex-start" }}>
