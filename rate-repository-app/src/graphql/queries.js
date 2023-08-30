@@ -62,6 +62,7 @@ export const GET_ME = gql`
             repository {
               fullName
             }
+            repositoryId
           }
         }
       }
@@ -82,5 +83,11 @@ export const POST_USER = gql`
     createUser(user: $user) {
       id
     }
+  }
+`;
+
+export const DELETE_REVIEW = gql`
+  mutation($deleteReviewId: ID!) {
+    deleteReview(id: $deleteReviewId)
   }
 `;
