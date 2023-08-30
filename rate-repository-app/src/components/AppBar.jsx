@@ -37,6 +37,7 @@ const AppBar = () => {
             </>
           : <>
               <AppBarTab linkTo={'/create_review'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Create a review</AppBarTab>
+              <AppBarTab linkTo={'/my_reviews'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>My reviews</AppBarTab>
               <AppBarTab
                 onPress={signout}
                 fontWeight={'bold'}
