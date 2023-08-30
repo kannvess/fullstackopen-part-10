@@ -32,11 +32,14 @@ const AppBar = () => {
         <AppBarTab linkTo={'/'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Repositories</AppBarTab>
         {!me.loading && !me.data.me
           ? <AppBarTab linkTo={'/signin'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Sign in</AppBarTab>
-          : <AppBarTab
-              onPress={signout}
-              fontWeight={'bold'}
-              style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}
-            >Sign out</AppBarTab>
+          : <>
+              <AppBarTab linkTo={'/create_review'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Create a review</AppBarTab>
+              <AppBarTab
+                onPress={signout}
+                fontWeight={'bold'}
+                style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}
+              >Sign out</AppBarTab>
+            </>
         }
         {/* <AppBarTab linkTo={'/signin'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Sign in</AppBarTab>
         <AppBarTab

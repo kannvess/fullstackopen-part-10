@@ -51,3 +51,11 @@ export const GET_ME = gql`
     }
   }
 `;
+
+export const POST_REVIEW = gql`
+  mutation($review: CreateReviewInput) {
+    createReview(review: $review) {
+      repositoryId
+    }
+  }
+`;
