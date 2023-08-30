@@ -31,7 +31,10 @@ const AppBar = () => {
       <ScrollView horizontal>
         <AppBarTab linkTo={'/'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Repositories</AppBarTab>
         {!me.loading && !me.data.me
-          ? <AppBarTab linkTo={'/signin'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Sign in</AppBarTab>
+          ? <>
+              <AppBarTab linkTo={'/signin'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Sign in</AppBarTab>
+              <AppBarTab linkTo={'/signup'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Sign up</AppBarTab>
+            </>
           : <>
               <AppBarTab linkTo={'/create_review'} fontWeight={'bold'} style={{ color: 'white', marginVertical: 20, marginHorizontal: 10 }}>Create a review</AppBarTab>
               <AppBarTab

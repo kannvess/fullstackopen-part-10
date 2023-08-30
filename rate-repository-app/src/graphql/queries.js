@@ -59,3 +59,11 @@ export const POST_REVIEW = gql`
     }
   }
 `;
+
+export const POST_USER = gql`
+  mutation($user: CreateUserInput) {
+    createUser(user: $user) {
+      id
+    }
+  }
+`;
