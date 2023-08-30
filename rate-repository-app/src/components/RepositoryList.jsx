@@ -5,6 +5,8 @@ import Text from './Text';
 import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import theme from '../theme';
+import { Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -16,12 +18,23 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
   const [sort, setSort] = useState();
-  const { repositories, loading } = useRepositories(sort);
+  const [search, setSearch] = useState();
+  const [searchValue] = useDebounce(search, 1000);
+  const { repositories, loading } = useRepositories(sort, searchValue);
   
-  return <RepositoryListContainer sort={sort} setSort={setSort} repositories={repositories} loading={loading} />;
+  return (
+    <RepositoryListContainer
+      sort={sort}
+      setSort={setSort}
+      repositories={repositories}
+      loading={loading}
+      search={search}
+      setSearch={setSearch}
+    />
+  );
 };
 
-export const RepositoryListContainer = ({ repositories, loading, sort, setSort }) => {
+export const RepositoryListContainer = ({ repositories, loading, sort, setSort, search, setSearch }) => {
   if (loading) return <Text style={{ position: 'absolute', top: '50%', left: '50%' }}>loading...</Text>;
 
   const repositoryNodes = repositories
@@ -35,15 +48,22 @@ export const RepositoryListContainer = ({ repositories, loading, sort, setSort }
       renderItem={({ item }) => <RepositoryItem item={item} />}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={
-        <Picker
-          selectedValue={sort}
-          onValueChange={(itemValue) => setSort(itemValue)}
-        >
-          <Picker.Item color={theme.colors.textSecondary} label='Select an item...' enabled={false} />
-          <Picker.Item label="Latest repositories" value="latest" />
-          <Picker.Item label="Highest rated repositories" value="highest" />
-          <Picker.Item label="Lowest rated repositories" value="lowest" />
-        </Picker>
+        <>
+          <Searchbar
+            placeholder='Search for repositories'
+            onChangeText={(query) => setSearch(query)}
+            value={search}
+          />
+          <Picker
+            selectedValue={sort}
+            onValueChange={(itemValue) => setSort(itemValue)}
+          >
+            <Picker.Item color={theme.colors.textSecondary} label='Select an item...' enabled={false} />
+            <Picker.Item label="Latest repositories" value="latest" />
+            <Picker.Item label="Highest rated repositories" value="highest" />
+            <Picker.Item label="Lowest rated repositories" value="lowest" />
+          </Picker>
+        </>
       }
     />
   );
