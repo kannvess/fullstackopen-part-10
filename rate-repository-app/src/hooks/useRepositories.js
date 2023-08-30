@@ -8,7 +8,7 @@ const useRepositories = (sort, searchKeyword) => {
       ? { orderBy: 'RATING_AVERAGE', orderDirection: 'ASC' }
       : undefined;
   
-  const { data, loading } = useQuery(GET_REPOSITORIES, {
+  const { data, loading, fetchMore } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: 'cache-and-network',
     variables: {
       ...order,
@@ -16,7 +16,23 @@ const useRepositories = (sort, searchKeyword) => {
     },
   });
 
-  return !loading ? { repositories: data.repositories, loading: loading } : { repositories: [], loading: loading};
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...order,
+        searchKeyword,
+      },
+    });
+  };
+
+  return !loading ? { repositories: data.repositories, fetchMore: handleFetchMore, loading: loading } : { repositories: [], loading: loading};
 };
 
 export default useRepositories;

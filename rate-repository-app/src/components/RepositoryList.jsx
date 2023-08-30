@@ -20,13 +20,18 @@ const RepositoryList = () => {
   const [sort, setSort] = useState();
   const [search, setSearch] = useState();
   const [searchValue] = useDebounce(search, 1000);
-  const { repositories, loading } = useRepositories(sort, searchValue);
+  const { repositories, loading, fetchMore } = useRepositories(sort, searchValue);
+
+  const onEndReach = () => {
+    fetchMore();
+  };
   
   return (
     <RepositoryListContainer
+      repositories={repositories}
+      onEndReach={onEndReach}
       sort={sort}
       setSort={setSort}
-      repositories={repositories}
       loading={loading}
       search={search}
       setSearch={setSearch}
@@ -34,7 +39,7 @@ const RepositoryList = () => {
   );
 };
 
-export const RepositoryListContainer = ({ repositories, loading, sort, setSort, search, setSearch }) => {
+export const RepositoryListContainer = ({ repositories, onEndReach, loading, sort, setSort, search, setSearch }) => {
   if (loading) return <Text style={{ position: 'absolute', top: '50%', left: '50%' }}>loading...</Text>;
 
   const repositoryNodes = repositories
@@ -65,6 +70,8 @@ export const RepositoryListContainer = ({ repositories, loading, sort, setSort, 
           </Picker>
         </>
       }
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

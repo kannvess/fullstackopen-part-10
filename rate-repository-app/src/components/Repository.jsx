@@ -2,8 +2,9 @@ import { FlatList, Image, Pressable, View } from "react-native";
 import Text from "./Text";
 import theme from "../theme";
 import { useParams } from "react-router-native";
-import useRepositories from "../hooks/useRepositories";
 import * as Linking from 'expo-linking';
+import { useQuery } from "@apollo/client";
+import { GET_REPOSITORY } from "../graphql/queries";
 
 const RepositoryContainer = ({ repository }) => {
   return (
@@ -58,25 +59,45 @@ const ReviewItem = ({ review }) => {
 
 const Repository = () => {
   const { id } = useParams();
-  const { repositories, loading } = useRepositories();
+  const { data, loading, fetchMore } = useQuery(GET_REPOSITORY, {
+    variables: {
+      repositoryId: id,
+    },
+  });
+
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data.repository.reviews.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        repositoryId: id,
+        after: data.repository.reviews.pageInfo.endCursor,
+      },
+    });
+  };
 
   if (loading) return <Text style={{ position: 'absolute', top: '50%', left: '50%' }}>loading...</Text>;
-  
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
 
-  const repository = repositoryNodes.find((node) => node.id === id );
-  const reviewNodes = repository.reviews.edges.map((edge) => edge.node);
+  const reviewNodes = data.repository.reviews.edges.map((edge) => edge.node);
+
+  const onEndReached = () => {
+    handleFetchMore();
+  };
 
   return (
     <FlatList
       data={reviewNodes}
       renderItem={({ item }) => <ReviewItem review={item} />}
       keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <RepositoryContainer repository={repository} />}
+      ListHeaderComponent={() => <RepositoryContainer repository={data.repository} />}
       ListHeaderComponentStyle={{ marginBottom: 10 }}
       ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
     />
   );
 };

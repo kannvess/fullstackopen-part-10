@@ -5,6 +5,7 @@ import theme from '../theme';
 import { useApolloClient, useQuery } from "@apollo/client";
 import { GET_ME } from "../graphql/queries";
 import useAuthStorage from "../hooks/useAuthStorage";
+import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,10 +19,12 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const authStorage = useAuthStorage();
   const apolloClient = useApolloClient();
+  const navigate = useNavigate();
   
   const me = useQuery(GET_ME);
 
   const signout = async () => {
+    navigate('/');
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
   };
